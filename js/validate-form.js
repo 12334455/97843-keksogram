@@ -6,37 +6,37 @@
     var sizeY = formElementResize['resize-y'];
     var resSize = formElementResize['resize-size'];
 
-    var MINSIZE = 0;
+    var MIN_IMAGE_SIZE = 0;
 
     var img = document.getElementById('upload-select-image');
     var width = img.clientWidth;
     var height = img.clientHeight;
 
-    sizeX.min = sizeY.min = 0;
+    sizeX.min = sizeY.min =  MIN_IMAGE_SIZE;
     sizeX.max = width - 1;
     sizeY.max = height -1;
-    sizeX.value = sizeY.value = 0;
+    sizeX.value = sizeY.value =  MIN_IMAGE_SIZE;
     resSize.min = resSize.value = 1;
-    resSize.max = Math.min(width - 1, height - 1);
+    resSize.max = Math.min(width, height);
 
 
     sizeX.onchange = function(evt) {
-        if (sizeX.value < MINSIZE) {
+        if (sizeX.value < MIN_IMAGE_SIZE) {
             sizeX.value = 0;
         }
         if (sizeX > width) {
-            sizeX.value = width;
+            sizeX.value = width - 1;
         }
         resSize.max = Math.min(width - sizeX.value, height - sizeY.value);
     };
 
 
     sizeY.onchange = function(evt) {
-        if (sizeY.value < MINSIZE) {
+        if (sizeY.value < MIN_IMAGE_SIZE) {
             sizeY.value = 0;
         }
         if (sizeY > height) {
-            sizeY.value = height;
+            sizeY.value = height - 1;
         }
         resSize.max = Math.min(width - sizeX.value, height - sizeY.value);
     };
