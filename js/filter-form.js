@@ -42,5 +42,6 @@
     filterForm.classList.add('invisible');
   }
 
+  selectedFilter.value = docCookies.getItem('filter-name');
   setFilter();
 })();
