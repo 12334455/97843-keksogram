@@ -12,11 +12,11 @@
     var width = img.clientWidth;
     var height = img.clientHeight;
 
-    sizeX.min = sizeY.min =  MIN_IMAGE_SIZE;
-    sizeX.max = width - 1;
-    sizeY.max = height -1;
-    sizeX.value = sizeY.value =  MIN_IMAGE_SIZE;
-    resSize.min = resSize.value = 1;
+    sizeX.min = sizeY.min = MIN_IMAGE_SIZE;
+    sizeX.max = width;
+    sizeY.max = height;
+    sizeX.value = sizeY.value = MIN_IMAGE_SIZE;
+    resSize.min = resSize.value = MIN_IMAGE_SIZE;
     resSize.max = Math.min(width, height);
 
 
@@ -46,7 +46,7 @@
         var value = formElementFilter.elements['upload-filter'].value;
         var date = new Date();
         var birthDate = new Date (1994, 11, 7);
-        var seconds = Math.floor((date.getTime() - birthDate.getTime())/(1000));
+        var seconds = Math.floor((date.getTime() - birthDate.getTime())/1000);
         docCookies.setItem('filter-name', value, seconds, '/');
         formElementFilter.submit();
     };
