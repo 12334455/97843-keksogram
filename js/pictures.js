@@ -15,7 +15,7 @@
 
         pictureFragment.appendChild(newPictureElement);
 
-        if(picture['url']) {
+        if (picture['url']) {
             var imageElement = new Image();
             imageElement.src = picture['url'];
         }
