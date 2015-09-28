@@ -1,5 +1,5 @@
 'use strict';
-(function (){
+(function() {
   var ReadyState = {
     'UNSENT': 0,
     'OPENED': 1,
@@ -12,7 +12,7 @@
 
   var filters = document.querySelector('.filters');
   var pictureContainer = document.querySelector('.pictures');
-  var pictures;
+  var allPictures;
 
   filters.classList.add('hidden');
 
@@ -22,7 +22,7 @@
     var pictureTemplate = document.getElementById('picture-template');
     var pictureFragment = document.createDocumentFragment();
 
-    pictures.forEach(function (picture){
+    pictures.forEach(function(picture) {
       var newPictureElement = pictureTemplate.content.children[0].cloneNode(true);
       newPictureElement.querySelector('.picture-comments').textContent = picture['comments'];
       newPictureElement.querySelector('.picture-likes').textContent = picture['likes'];
@@ -34,11 +34,11 @@
         imageElement.src = picture['url'];
       }
 
-      var imageLoadTimeout = setTimeout(function (){
+      var imageLoadTimeout = setTimeout(function() {
         newPictureElement.classList.add('picture-load-failure');
       }, REQUEST_FAILURE_TIMEOUT);
 
-      imageElement.onload = function (){
+      imageElement.onload = function() {
         var oldImageElement = newPictureElement.querySelector('.picture img');
         newPictureElement.replaceChild(imageElement, oldImageElement);
         imageElement.style.width = '182px';
@@ -46,7 +46,7 @@
         clearTimeout(imageLoadTimeout);
       };
 
-      imageElement.onerror = function (){
+      imageElement.onerror = function() {
         newPictureElement.classList.add('picture-load-failure');
       };
       pictureContainer.appendChild(pictureFragment);
@@ -65,7 +65,7 @@
     xhr.open('get', 'data/pictures.json');
     xhr.send();
 
-    xhr.onreadystatechange = function (evt){
+    xhr.onreadystatechange = function(evt) {
       var loadedXhr = evt.target;
 
       switch (loadedXhr.readyState) {
@@ -77,20 +77,19 @@
 
         case ReadyState.DONE:
         default:
-          if (loadedXhr.status === 200) {
-            var data = loadedXhr.response;
-            pictureContainer.classList.remove('pictures-loading');
-            callback(JSON.parse(data));
-          }
-
           if (loadedXhr.status > 400) {
             showLoadFailure();
+          }
+          if (loadedXhr.status === 200) {
+            var data = loadedXhr.response || '';
+            pictureContainer.classList.remove('pictures-loading');
+            return callback(JSON.parse(data));
           }
           break;
       }
     };
 
-    xhr.ontimeout = function (){
+    xhr.ontimeout = function() {
       showLoadFailure();
     };
   }
@@ -99,14 +98,14 @@
     var filteredPictures = pictures.slice(0);
     switch (filterValue) {
       case 'new':
-        filteredPictures = filteredPictures.sort(function (a, b){
-          return(b.date - a.date);
+        filteredPictures = filteredPictures.sort(function(a, b) {
+          return b.date - a.date;
         });
         break;
 
       case 'discussed':
-        filteredPictures = filteredPictures.sort(function (a, b){
-          return(b.comments - a.comments);
+        filteredPictures = filteredPictures.sort(function(a, b) {
+          return b.comments - a.comments;
         });
         break;
 
@@ -118,14 +117,14 @@
   }
 
   function setActiveFilter(filterValue) {
-    var filteredPictures = filterPictures(pictures, filterValue);
+    var filteredPictures = filterPictures(allPictures, filterValue);
     renderPictures(filteredPictures);
   }
 
   function initFilters() {
     var filterElements = filters['filter'];
     for (var i = 0, l = filterElements.length; i < l; i++) {
-      filterElements[i].onclick = function (evt){
+      filterElements[i].onclick = function(evt) {
         var clickedFilter = evt.currentTarget;
         setActiveFilter(clickedFilter.value);
       };
@@ -134,9 +133,8 @@
 
   initFilters();
 
-  loadPictures(function (loadedPictures){
-    pictures = loadedPictures;
+  loadPictures(function(loadedPictures) {
+    allPictures = loadedPictures;
     setActiveFilter('popular');
-    return;
   });
 })();

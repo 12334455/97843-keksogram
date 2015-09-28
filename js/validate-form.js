@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+(function() {
   var formElementResize = document.forms['upload-resize'];
   var formElementFilter = document.forms['upload-filter'];
 
@@ -21,7 +21,7 @@
   resSize.max = Math.min(width, height);
 
 
-  sizeX.onchange = function (evt) {
+  sizeX.onchange = function() {
     if (sizeX.value < MIN_IMAGE_SIZE) {
       sizeX.value = 0;
     }
@@ -32,7 +32,7 @@
   };
 
 
-  sizeY.onchange = function () {
+  sizeY.onchange = function() {
     if (sizeY.value < MIN_IMAGE_SIZE) {
       sizeY.value = 0;
     }
@@ -42,7 +42,7 @@
     resSize.max = Math.min(width - sizeX.value, height - sizeY.value);
   };
 
-  formElementFilter.onsubmit = function (evt) {
+  formElementFilter.onsubmit = function(evt) {
     evt.preventDefault();
     var value = formElementFilter.elements['upload-filter'].value;
     var date = new Date();
