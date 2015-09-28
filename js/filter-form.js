@@ -1,5 +1,6 @@
+'use strict';
 (function() {
-  var uploadForm = document.forms['upload-select-image'];
+    var uploadForm = document.forms['upload-select-image'];
   var resizeForm = document.forms['upload-resize'];
   var filterForm = document.forms['upload-filter'];
 
@@ -19,15 +20,15 @@
     }
 
     previewImage.className = 'filter-image-preview' + ' ' + filterMap[selectedFilter.value];
-  };
-
-  for (var i = 0, l = selectedFilter.length; i < l; i++) {
-    selectedFilter[i].onchange = function(evt) {
-      setFilter();
-    }
   }
 
-  prevButton.onclick = function(evt) {
+  for (var i = 0, l = selectedFilter.length; i < l; i++) {
+    selectedFilter[i].onchange = function() {
+      setFilter();
+    };
+  }
+
+  prevButton.onclick = function() {
     evt.preventDefault();
 
     filterForm.reset();
@@ -40,7 +41,7 @@
 
     uploadForm.classList.remove('invisible');
     filterForm.classList.add('invisible');
-  }
+  };
 
   selectedFilter.value = docCookies.getItem('filter-name');
   setFilter();
