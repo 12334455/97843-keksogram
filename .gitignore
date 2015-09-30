@@ -1,2 +1,4 @@
+gosha/
+node_modules/
 .idea
-node_modules
+.sublime*
