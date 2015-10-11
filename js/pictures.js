@@ -179,7 +179,8 @@
       pictureContainer.classList.add('picture-load-failure');
     } else {
       allPictures = loadedPictures;
-      setActiveFilter(localStorage.getItem('filterID') || 'filter-popular');
+      var filterID = localStorage.getItem('filterID');
+      setActiveFilter(filterID || 'filter-popular');
       filters.classList.remove('hidden');
     }
   });
