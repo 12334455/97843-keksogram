@@ -20,10 +20,11 @@
 
   filters.classList.add('hidden');
 
-  function renderPictures(pictures, pageNumber, replace) {
+  function renderPictures(pictures, pageNumber, withoutReplace) {
+    var replace = !withoutReplace;
     pageNumber = pageNumber || 0;
 
-    if (!replace) {
+    if (replace) {
       pictureContainer.classList.remove('pictures-failure');
       pictureContainer.innerHTML = '';
     }
