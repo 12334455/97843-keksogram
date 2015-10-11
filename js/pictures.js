@@ -17,13 +17,13 @@
   var currentPage = 0;
   var currentPictures;
 
+
   filters.classList.add('hidden');
 
   function renderPictures(pictures, pageNumber, replace) {
-    replace = typeof replace !== 'undefined' ? replace : true;
     pageNumber = pageNumber || 0;
 
-    if (replace) {
+    if (!replace) {
       pictureContainer.classList.remove('pictures-failure');
       pictureContainer.innerHTML = '';
     }
@@ -125,23 +125,25 @@
   }
 
   function setActiveFilter(filterID) {
+    document.getElementById(filterID).checked = true;
     currentPictures = filterPictures(allPictures, filterID);
     currentPage = 0;
-    renderPictures(currentPictures, currentPage, true);
+    renderPictures(currentPictures, currentPage, false);
   }
 
   function initFilters() {
     var filtersContainer = document.querySelector('.filters');
 
     filtersContainer.addEventListener('click', function(evt) {
-      var clickedFilter = evt.target;
-      setActiveFilter(clickedFilter.id);
+      var element = evt.target;
+      if (element.tagName === 'INPUT') {
+        setActiveFilter(element.id);
+      }
     });
-
   }
 
   function isNextPageAvailable() {
-    return currentPage < Math.ceil(allPictures.length / PAGE_SIZE);
+    return !!allPictures && currentPage < Math.ceil(allPictures.length / PAGE_SIZE);
   }
 
   function isAtTheBottom() {
@@ -163,7 +165,7 @@
     });
 
     window.addEventListener('loadneeded', function() {
-      renderPictures(currentPictures, currentPage++, false);
+      renderPictures(currentPictures, currentPage++, true);
     });
   }
 
@@ -177,7 +179,6 @@
     } else {
       allPictures = loadedPictures;
       setActiveFilter(localStorage.getItem('filterID') || 'filter-popular');
-      document.getElementById(localStorage.getItem('filterID')).checked = true;
       filters.classList.remove('hidden');
     }
   });
