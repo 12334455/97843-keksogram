@@ -1,3 +1,4 @@
+/* global Photo: true */
 'use strict';
 (function() {
   var ReadyState = {
@@ -8,15 +9,15 @@
     'DONE': 4
   };
 
-  var REQUEST_FAILURE_TIMEOUT = 10000;
-  var PAGE_SIZE = 12;
 
+  var PAGE_SIZE = 12;
+  var REQUEST_FAILURE_TIMEOUT = 10000;
   var filters = document.querySelector('.filters');
   var pictureContainer = document.querySelector('.pictures');
   var allPictures;
   var currentPage = 0;
   var currentPictures;
-
+  var renderedPictures = [];
 
   filters.classList.add('hidden');
 
@@ -25,12 +26,13 @@
     pageNumber = pageNumber || 0;
 
     if (replace) {
+      var el;
+      while ((el = renderedPictures.shift())) {
+        el.unrender();
+      }
       pictureContainer.classList.remove('pictures-failure');
-      pictureContainer.innerHTML = '';
     }
 
-
-    var pictureTemplate = document.getElementById('picture-template');
     var pictureFragment = document.createDocumentFragment();
 
     var picturesFrom = pageNumber * PAGE_SIZE;
@@ -38,34 +40,11 @@
     pictures = pictures.slice(picturesFrom, picturesTo);
 
     pictures.forEach(function(picture) {
-      var newPictureElement = pictureTemplate.content.children[0].cloneNode(true);
-      newPictureElement.querySelector('.picture-comments').textContent = picture['comments'];
-      newPictureElement.querySelector('.picture-likes').textContent = picture['likes'];
-
-      pictureFragment.appendChild(newPictureElement);
-
-      if (picture['url']) {
-        var imageElement = new Image();
-        imageElement.src = picture['url'];
-      }
-
-      var imageLoadTimeout = setTimeout(function() {
-        newPictureElement.classList.add('picture-load-failure');
-      }, REQUEST_FAILURE_TIMEOUT);
-
-      imageElement.onload = function() {
-        var oldImageElement = newPictureElement.querySelector('.picture img');
-        newPictureElement.replaceChild(imageElement, oldImageElement);
-        imageElement.style.width = '182px';
-        imageElement.style.height = '182px';
-        clearTimeout(imageLoadTimeout);
-      };
-
-      imageElement.onerror = function() {
-        newPictureElement.classList.add('picture-load-failure');
-      };
-      pictureContainer.appendChild(pictureFragment);
+      var newPictureElement = new Photo(picture);
+      newPictureElement.render(pictureFragment);
+      renderedPictures.push(newPictureElement);
     });
+    pictureContainer.appendChild(pictureFragment);
   }
 
 
