@@ -46,11 +46,19 @@
     this._element = null;
   };
 
-  Photo.prototype._onClick = function() {
+  Photo.prototype._onClick = function(evt) {
+    evt.preventDefault();
     if (!this._element.classList.contains('picture-load-failure')) {
-      var galleryEvent = new CustomEvent('galleryclick', { detail: { photoElement: this }});
+      var galleryEvent = new CustomEvent('galleryclick', {
+        detail: this
+      });
+
       window.dispatchEvent(galleryEvent);
     }
+  };
+
+  Photo.prototype.getPhotoSrc = function() {
+    return this._data['url'];
   };
 
   window.Photo = Photo;
