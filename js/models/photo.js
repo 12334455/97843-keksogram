@@ -12,8 +12,7 @@
       liked: false
     },
 
-  likeToggle: function() {
-      console.log(this.get('liked'));
+    likeToggle: function() {
       var likesCount = this.get('likes');
       if (!this.get('liked')) {
         likesCount++;
@@ -23,7 +22,7 @@
       this.set({
         likes: likesCount,
         liked: !this.get('liked')
-      })
+      });
     }
   });
 

@@ -5,21 +5,15 @@
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var PhotoPreviewView = Backbone.View.extend({
     initialize: function() {
-      //this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'change:liked', this._onClick);
       this._onPhotoLoadError = this._onPhotoLoadError.bind(this);
       this._onPhotoLoad = this._onPhotoLoad.bind(this);
       this._onPhotoLoadTimeOut = setTimeout(this._onPhotoLoadError, REQUEST_FAILURE_TIMEOUT);
-      //this._onClick = this._onClick.bind(this);
-      //this.setElement = document.querySelector('.gallery-overlay-preview').cloneNode(true);
+      this._onClick = this._onClick.bind(this);
+      this.setElement = document.querySelector('.gallery-overlay-preview').cloneNode(true);
     },
     events: {
       'click': '_onClick'
-    },
-
-
-    remove:function() {
-      this.el.classList.add('invisible');
-      Backbone.View.prototype.remove.apply(this, arguments);
     },
 
     render: function() {
@@ -49,7 +43,8 @@
     },
 
     _onClick: function(evt) {
-      //evt.stopPropagation();
+
+      evt.stopPropagation();
       if (evt.target.classList.contains('gallery-overlay-controls-like')) {
         console.log(evt.target);
         this.model.likeToggle();

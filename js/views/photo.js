@@ -65,7 +65,7 @@
       this._cleanupImageListeners(evt.target);
     },
 
-    _onImageFail: function(evt) {
+    _onImageFail: function() {
       this.el.classList.add('picture-load-failure');
     },
 

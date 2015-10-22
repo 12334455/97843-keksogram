@@ -1,4 +1,4 @@
-/* global PhotoPreviewView: true Backbone: true PhotosCollection: true*/
+/* global PhotoPreviewView: true Backbone: true*/
 'use strict';
 
 (function() {
@@ -47,8 +47,8 @@
     if (this.view) {
       this.view.remove();
       this.view = null;
-  }
-};
+    }
+  };
 
 
   Gallery.prototype.setCurrentPhoto = function(photoIndex) {

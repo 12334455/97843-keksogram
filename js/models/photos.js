@@ -1,4 +1,4 @@
-/* global Backbone: true PhotoModel: true PhotoView:true*/
+/* global Backbone: true PhotoModel: true*/
 
 'use strict';
 
