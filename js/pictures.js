@@ -113,7 +113,7 @@
   }
 
   //вместо функции loadpictures. fetch делает запрос на сервер.
-  photosCollection.fetch({ timeout: REQUEST_FAILURE_TIMEOUT }).success(function(loaded, state) { //success и failure это callback
+  photosCollection.fetch({ timeout: REQUEST_FAILURE_TIMEOUT }).success(function() {
     initFilters();
     filters.classList.remove('hidden');
     initScroll();
