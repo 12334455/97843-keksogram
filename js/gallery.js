@@ -39,7 +39,7 @@
   };
 
   Gallery.prototype._showCurrentPhoto = function() {
-    this._photoPreviewView  = new PhotoPreviewView({
+    this._photoPreviewView = new PhotoPreviewView({
       model: this.collection.at(this._currentIndexPhoto),
       el: document.querySelector('.gallery-overlay-preview')
     });
