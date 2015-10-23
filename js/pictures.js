@@ -1,9 +1,10 @@
 /* global PhotoView: true Gallery: true PhotosCollection: true*/
 'use strict';
-/*
- Загрузка и фильтрация фотографий производится через коллекцию, описанную в модуле js/models/photos.js,
- а отрисовка — через представление js/views/photo.js.
- */
+
+  /*
+   Загрузка и фильтрация фотографий производится через коллекцию, описанную в модуле js/models/photos.js,
+   а отрисовка — через представление js/views/photo.js.
+   */
 (function() {
   var PAGE_SIZE = 12;
   var REQUEST_FAILURE_TIMEOUT = 10000;
@@ -45,15 +46,10 @@
         gallery.show();
       });
 
-/*      view.on('likeclick', function() {
-        gallery.setCurrentPhoto(photosCollection.indexOf(model));
-        gallery.show();
-      });*/
     });
 
     pictureContainer.appendChild(pictureFragment);
   }
-
 
   function filterPictures(filterID) { // Переписали с помощью записи в коллекцию
     photosCollection.setFilter(filterID);
@@ -112,7 +108,6 @@
     pictureContainer.classList.add('picture-load-failure');
   }
 
-  //вместо функции loadpictures. fetch делает запрос на сервер.
   photosCollection.fetch({ timeout: REQUEST_FAILURE_TIMEOUT }).success(function() {
     initFilters();
     filters.classList.remove('hidden');
@@ -122,5 +117,4 @@
   }).fail(function() {
     showLoadFailure();
   });
-
 })();

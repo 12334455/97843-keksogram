@@ -14,73 +14,62 @@
 
   var Gallery = function(collection) {
     this.collection = collection;
-    this.view = null;
-
+    this._photoPreviewView = new Backbone.View();
     this._currentIndexPhoto = 0;
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onDocumentKeyDown = this._onDocumentKeyDown.bind(this);
     this._element = document.querySelector('.gallery-overlay');
   };
 
-  /*var Gallery = function() {
-    this._photos = new Backbone.Collection();
-
-    this._element = document.querySelector('.gallery-overlay');
-    this._closeButton = this._element.querySelector('.gallery-overlay-close');
-    this._photoElement = this._element.querySelector('.gallery-overlay-preview img');
-    this._photos.reset();
-    this._currentPhoto = 0;
-    this._currentPicture = new Backbone.Model();
-    this._onCloseClick = this._onCloseClick.bind(this);
-    this._onDocumentKeyDown = this._onDocumentKeyDown.bind(this);
-  };
-*/
   Gallery.prototype.show = function() {
     this._element.classList.remove('invisible');
-    this._showCurrentPhoto();
     document.querySelector('.gallery-overlay-close').addEventListener('click', this._onCloseClick);
     document.addEventListener('keydown', this._onDocumentKeyDown);
+    this._showCurrentPhoto();
   };
 
   Gallery.prototype.hide = function() {
     this._element.classList.add('invisible');
-    if (this.view) {
-      this.view.remove();
-      this.view = null;
-    }
+    document.querySelector('.gallery-overlay-close').removeEventListener('click', this._onCloseClick);
+    document.removeEventListener('keydown', this._onDocumentKeyDown);
   };
-
 
   Gallery.prototype.setCurrentPhoto = function(photoIndex) {
     this._currentIndexPhoto = clamp(photoIndex, 0, this.collection.length - 1);
-    this._showCurrentPhoto();
   };
 
-
   Gallery.prototype._showCurrentPhoto = function() {
-    var photoPreviewView = new PhotoPreviewView({
+    this._photoPreviewView  = new PhotoPreviewView({
       model: this.collection.at(this._currentIndexPhoto),
       el: document.querySelector('.gallery-overlay-preview')
     });
-    photoPreviewView.render();
+    console.log(this._photoPreviewView);
+    this._photoPreviewView.render();
   };
 
   Gallery.prototype._onDocumentKeyDown = function(evt) {
     switch (evt.keyCode) {
       case Key.ESC:
         this.hide();
+        this._photoPreviewView.destroy();
         break;
       case Key.LEFT:
+        this._photoPreviewView.destroy();
         this.setCurrentPhoto(this._currentIndexPhoto - 1);
+        this._showCurrentPhoto();
         break;
       case Key.RIGHT:
+        this._photoPreviewView.destroy();
         this.setCurrentPhoto(this._currentIndexPhoto + 1);
+        this._showCurrentPhoto();
         break;
       default: break;
     }
   };
 
-  Gallery.prototype._onCloseClick = function() {
+  Gallery.prototype._onCloseClick = function(evt) {
+    evt.preventDefault();
+    this._photoPreviewView.destroy();
     this.hide();
   };
   window.Gallery = Gallery;

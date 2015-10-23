@@ -3,21 +3,29 @@
 
 (function() {
   var REQUEST_FAILURE_TIMEOUT = 10000;
+
   var PhotoPreviewView = Backbone.View.extend({
     initialize: function() {
-      this.listenTo(this.model, 'change:liked', this._onClick);
       this._onPhotoLoadError = this._onPhotoLoadError.bind(this);
       this._onPhotoLoad = this._onPhotoLoad.bind(this);
       this._onPhotoLoadTimeOut = setTimeout(this._onPhotoLoadError, REQUEST_FAILURE_TIMEOUT);
-      this._onClick = this._onClick.bind(this);
-      this.setElement = document.querySelector('.gallery-overlay-preview').cloneNode(true);
+
+      this.listenTo(this.model, 'change', this.render);
+
     },
     events: {
-      'click': '_onClick'
+      'click .gallery-overlay-controls-like': '_onClick'
+    },
+    _onClick: function(evt) {
+      evt.stopPropagation();
+      this.model.likeToggle();
+    },
+    destroy: function() {
+      this.stopListening();
+      this.undelegateEvents();
     },
 
     render: function() {
-      this.el.classList.remove('invisible');
       this.el.querySelector('.gallery-overlay-image').src = this.model.get('url');
       this.el.querySelector('.gallery-overlay-image').addEventListener('error', this._onPhotoLoadError);
       this.el.querySelector('.gallery-overlay-image').addEventListener('load', this._onPhotoLoad);
@@ -40,16 +48,6 @@
     _cleanupImageListeners: function(image) {
       image.removeEventListener('load', this._onPhotoLoad);
       image.removeEventListener('error', this._onPhotoLoadError);
-    },
-
-    _onClick: function(evt) {
-
-      evt.stopPropagation();
-      if (evt.target.classList.contains('gallery-overlay-controls-like')) {
-        console.log(evt.target);
-        this.model.likeToggle();
-        this.el.querySelector('.likes-count').innerHTML = this.model.get('likes');
-      }
     }
   });
 

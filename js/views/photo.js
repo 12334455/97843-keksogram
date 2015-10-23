@@ -5,17 +5,13 @@
 
 (function() {
   var REQUEST_FAILURE_TIMEOUT = 10000;
-  var pictureTemplate = document.getElementById('picture-template');
+  var pictureTemplate = document.querySelector('.picture-template');
 
   var PhotoView = Backbone.View.extend({
     initialize: function() {
       this._onImageLoad = this._onImageLoad.bind(this);
       this._onImageFail = this._onImageFail.bind(this);
       this._onClick = this._onClick.bind(this);
-      this.listenTo(this.model, 'change', this.render);
-      //this._onModelLike = this._onModelLike.bind(this);
-      //this.model.on('change:liked', this._onModelLike);
-      //this.setElement(pictureTemplate.content.children[0].cloneNode(true));
     },
 
     events: {
@@ -48,10 +44,6 @@
       if (this.el.classList.contains('picture') && !this.el.classList.contains('picture-load-failure')) {
         this.trigger('galleryclick');
       }
-/*      if (this.el.classList.contains('picture-likes')) {
-        this.trigger('likeclick');
-      }*/
-
     },
 
     _onImageLoad: function(evt) {
@@ -68,7 +60,6 @@
     _onImageFail: function() {
       this.el.classList.add('picture-load-failure');
     },
-
 
     _cleanupImageListeners: function(image) {
       image.removeEventListener('load', this._onImageLoad);
