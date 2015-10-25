@@ -6,19 +6,56 @@
    а отрисовка — через представление js/views/photo.js.
    */
 (function() {
+  /**
+   * @const
+   * @type {number}
+   */
   var PAGE_SIZE = 12;
+
+  /**
+   * @const
+   * @type {number}
+   */
   var REQUEST_FAILURE_TIMEOUT = 10000;
+
+  /**
+   * Элемент переключателей фильтров
+   * @type {Element}
+   */
   var filters = document.querySelector('.filters');
+
+  /**
+   * Контейнер списка фотографий
+   * @type {Element}
+   */
   var pictureContainer = document.querySelector('.pictures');
+
+  /**
+   * @type {number}
+   */
   var currentPage = 0;
 
+  /**
+   * @type {*|PhotosCollection}
+   */
+  var photosCollection = new PhotosCollection();
+
+  /**
+   * @type {*|Gallery}
+   */
+  var gallery = new Gallery(photosCollection);
+
+  /**
+   * @type {Array}
+   */
+  var renderedViews = [];
 
   filters.classList.add('hidden');
 
-  var photosCollection = new PhotosCollection(); //инстанс, сущность типа PhotosCollection
-  var gallery = new Gallery(photosCollection);
-  var renderedViews = [];
-
+  /**
+   * Выводит на страницу список отелей постранично (12)
+   * @param {number} pageNumber
+   */
   function renderPictures(pageNumber) {
     pageNumber = pageNumber || 0;
 
@@ -51,19 +88,33 @@
     pictureContainer.appendChild(pictureFragment);
   }
 
-  function filterPictures(filterID) { // Переписали с помощью записи в коллекцию
+  /**
+   * Фильтрация списка фотографий
+   * в соответствии с установленным фильтром
+   * Плюс запись установленного фильтра в localStorage
+   * @param {string} filterID
+   */
+  function filterPictures(filterID) {
     photosCollection.setFilter(filterID);
     photosCollection.sort();
     localStorage.setItem('filterID', filterID);
   }
 
+  /**
+   * Вызывает функцию фильтрации на списке фотографий с переданным fitlerID
+   * и подсвечивает кнопку активного фильтра.
+   * @param {string} filterID
+   */
   function setActiveFilter(filterID) {
     document.getElementById(filterID).checked = true;
-    filterPictures(filterID); //передаем текущие фотки и текущий нажатый фильтр
+    filterPictures(filterID);
     currentPage = 0;
     renderPictures(currentPage);
   }
 
+  /**
+   * Инициализация подписки на клики по кнопкам фильтра.
+   */
   function initFilters() {
     var filtersContainer = document.querySelector('.filters');
 
@@ -75,21 +126,38 @@
     });
   }
 
+  /**
+   * Проверяет можно ли отрисовать следующую страницу списка фотографий.
+   * @returns {boolean}
+   */
   function isNextPageAvailable() {
     return !!photosCollection && currentPage < Math.ceil(photosCollection.length / PAGE_SIZE);
   }
 
+  /**
+   * Проверяет, находится ли скролл внизу страницы
+   * @returns {boolean}
+   */
   function isAtTheBottom() {
     var GAP = 100;
     return pictureContainer.getBoundingClientRect().bottom - GAP <= window.innerHeight;
   }
 
+  /**
+   * Испускает на объекте window событие loadneeded если скролл находится внизу
+   * страницы и существует возможность показать еще одну страницу.
+   */
   function checkNextPage() {
     if (isAtTheBottom() && isNextPageAvailable()) {
       window.dispatchEvent(new CustomEvent('loadneeded'));
     }
   }
 
+  /**
+   * Создает два обработчика событий: на прокручивание окна, который в оптимизированном
+   * режиме (раз в 100 миллисекунд скролла) проверяет можно ли отрисовать следующую страницу;
+   * и обработчик события loadneeded, который вызывает функцию отрисовки следующей страницы.
+   */
   function initScroll() {
     var someTimeout;
 
@@ -104,10 +172,16 @@
     });
   }
 
+  /**
+   * При неудачной загрузке картинки добавляет класс ошибки загрузки
+   */
   function showLoadFailure() {
     pictureContainer.classList.add('picture-load-failure');
   }
 
+  /**
+   * Загрузка коллекции Backbone и инициализация фильтров и scroll.
+   */
   photosCollection.fetch({ timeout: REQUEST_FAILURE_TIMEOUT }).success(function() {
     initFilters();
     filters.classList.remove('hidden');

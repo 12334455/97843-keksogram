@@ -2,6 +2,10 @@
 
 // Модель фотографии, которая является наследником Backbone.Model
 (function() {
+  /**
+   * @constructor
+   * @extends {Backbone.Model}
+   **/
   var PhotoModel = Backbone.Model.extend({ // тип, наследник от бэкбон.модел. У на отличается тем, что имеет лайки
     initialize: function() {
       this.likeToggle = this.likeToggle.bind(this);
@@ -9,7 +13,9 @@
     defaults: {
       liked: false
     },
-
+    /**
+     * Функция обработчик количества лайков при нажатии
+     */
     likeToggle: function() {
       var likesCount = this.get('likes');
       if (!this.get('liked')) {
@@ -21,8 +27,6 @@
         likes: likesCount,
         liked: !this.get('liked')
       });
-
-      console.log(this.get('likes'), this.get('url'), this.get('liked'));
     }
 
   });

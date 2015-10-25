@@ -14,11 +14,25 @@
       this._onClick = this._onClick.bind(this);
     },
 
+    /**
+     * Маппинг событий происходящих на элементе на названия методов обработчиков
+     * событий.
+     * @type {Object.<string, string>}
+     */
     events: {
       'click .picture img': '_onClick'
     },
+
+    /**
+     * Класс элемента.
+     * @type {string}
+     * @override
+     */
     className: 'picture',
 
+    /**
+     * Отрисовка "карточки" фотографии
+     */
     render: function() {
       this.el.appendChild(pictureTemplate.content.children[0].cloneNode(true)); //this.el ссылка на el который создает bb при вызове конструктора
       this.el.querySelector('.picture-comments').textContent = this.model.get('comments');
@@ -39,6 +53,10 @@
       }
     },
 
+    /**
+     * @param {Event} evt
+     * @private
+     */
     _onClick: function(evt) {
       evt.preventDefault();
       if (this.el.classList.contains('picture') && !this.el.classList.contains('picture-load-failure')) {
@@ -46,6 +64,10 @@
       }
     },
 
+    /**
+     * @param {Event} evt
+     * @private
+     */
     _onImageLoad: function(evt) {
       clearTimeout(this._imageLoadTimeout);
       var oldElement = this.el.querySelector('.picture');
@@ -57,10 +79,18 @@
       this._cleanupImageListeners(evt.target);
     },
 
+    /**
+     * @private
+     */
     _onImageFail: function() {
       this.el.classList.add('picture-load-failure');
     },
 
+    /**
+     * Удаление обработчиков событий на элементе.
+     * @param {Image} image
+     * @private
+     */
     _cleanupImageListeners: function(image) {
       image.removeEventListener('load', this._onImageLoad);
       image.removeEventListener('error', this._onImageError);

@@ -8,12 +8,22 @@
    */
 
 (function() {
+  /**
+   * Список названий для каждого фильтра
+   * @enum {number}
+   */
   var filterToField = {
     'filter-new': 'date',
     'filter-discussed': 'comments',
     'filter-popular': 'likes'
   };
 
+  /**
+   * Простая функция сортировки
+   * @param {number} a
+   * @param {number} b
+   * @returns {number}
+   */
   var sortFunc = function(a, b) {
     if (a < b) {
       return 1;
@@ -23,6 +33,11 @@
     return 0;
   };
 
+  /**
+   * @constructor
+   * @param {Object} attributess
+   * @param {Object} options
+   */
   var PhotosCollection = Backbone.Collection.extend({ // Создаем новый конструктор типа PhotosCollection, который берет методы бэкбона и записывает их в прототип
     model: PhotoModel, //ссылка на модель фотографии
     url: 'data/pictures.json', // откуда берет данные
