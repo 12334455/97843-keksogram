@@ -159,11 +159,10 @@
    * и обработчик события loadneeded, который вызывает функцию отрисовки следующей страницы.
    */
   function initScroll() {
-    var someTimeout;
-
-    window.addEventListener('scroll', function() {
-      clearTimeout(someTimeout);
-      someTimeout = setTimeout(checkNextPage, 100);
+    window.addEventListener('scroll', function() { //Немного оптимизации
+      requestAnimationFrame(function() {
+        checkNextPage();
+      });
     });
 
     window.addEventListener('loadneeded', function() {

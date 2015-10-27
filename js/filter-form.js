@@ -1,4 +1,5 @@
 'use strict';
+
 (function() {
   var uploadForm = document.forms['upload-select-image'];
   var resizeForm = document.forms['upload-resize'];

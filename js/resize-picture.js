@@ -30,15 +30,15 @@
       var INITIAL_SIDE_RATIO = 0.75;
       // Размер меньшей стороны изображения.
       var side = Math.min(
-          this._container.width * INITIAL_SIDE_RATIO,
-          this._container.height * INITIAL_SIDE_RATIO);
+        this._container.width * INITIAL_SIDE_RATIO,
+        this._container.height * INITIAL_SIDE_RATIO);
 
       // Изначально предлагаемое кадрирование — часть по центру с размером в 3/4
       // от размера меньшей стороны.
       this._resizeConstraint = new Square(
-          this._container.width / 2 - side / 2,
-          this._container.height / 2 - side / 2,
-          side);
+        this._container.width / 2 - side / 2,
+        this._container.height / 2 - side / 2,
+        side);
 
       // Отрисовка изначального состояния канваса.
       this.redraw();
@@ -99,6 +99,12 @@
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
       //
+      this._ctx.lineWidth = 6;
+      this._ctx.strokeStyle = '#FFE753';
+      this._ctx.setLineDash([15, 10]);
+      var leftTopCoord = -this._resizeConstraint.side / 2;
+      var rightBottomCoord = this._resizeConstraint.side;
+      this._ctx.strokeRect(leftTopCoord, leftTopCoord, rightBottomCoord, rightBottomCoord);
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
@@ -141,8 +147,8 @@
      */
     updatePosition: function(x, y) {
       this.moveConstraint(
-          this._cursorPosition.x - x,
-          this._cursorPosition.y - y);
+        this._cursorPosition.x - x,
+        this._cursorPosition.y - y);
       this._cursorPosition = new Coordinate(x, y);
     },
 
@@ -202,9 +208,9 @@
      */
     moveConstraint: function(deltaX, deltaY, deltaSide) {
       this.setConstraint(
-          this._resizeConstraint.x + (deltaX || 0),
-          this._resizeConstraint.y + (deltaY || 0),
-          this._resizeConstraint.side + (deltaSide || 0));
+        this._resizeConstraint.x + (deltaX || 0),
+        this._resizeConstraint.y + (deltaY || 0),
+        this._resizeConstraint.side + (deltaSide || 0));
     },
 
     /**
@@ -250,15 +256,15 @@
     exportImage: function() {
       // Создаем Image, с размерами, указанными при кадрировании.
       var imageToExport = new Image(
-          this._resizeConstraint.side,
-          this._resizeConstraint.side);
+        this._resizeConstraint.side,
+        this._resizeConstraint.side);
 
       // Получаем ImageData из области изначального изображения.
       var imageData = this._ctx.getImageData(
-          this._resizeConstraint.x,
-          this._resizeConstraint.y,
-          this._resizeConstraint.side,
-          this._resizeConstraint.side);
+        this._resizeConstraint.x,
+        this._resizeConstraint.y,
+        this._resizeConstraint.side,
+        this._resizeConstraint.side);
 
       // Создается новый canvas, по размерам совпадающий с кадрированным
       // изображением, в него добавляется ImageData взятый из изначального
