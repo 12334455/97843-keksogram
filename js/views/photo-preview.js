@@ -11,7 +11,6 @@
       this._onPhotoLoadTimeOut = setTimeout(this._onPhotoLoadError, REQUEST_FAILURE_TIMEOUT);
 
       this.listenTo(this.model, 'change', this.render);
-
     },
 
     /**
