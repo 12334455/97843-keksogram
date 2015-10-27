@@ -12,6 +12,8 @@
       this._onImageLoad = this._onImageLoad.bind(this);
       this._onImageFail = this._onImageFail.bind(this);
       this._onClick = this._onClick.bind(this);
+
+      this.listenTo(this.model, 'change', this.render);
     },
 
     /**

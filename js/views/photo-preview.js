@@ -31,7 +31,6 @@
     _onClick: function(evt) {
       evt.stopPropagation();
       this.model.likeToggle();
-      document.querySelector('.picture-likes').textContent = this.model.get('likes');
     },
 
     /**
