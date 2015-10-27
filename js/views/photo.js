@@ -5,7 +5,7 @@
 
 (function() {
   var REQUEST_FAILURE_TIMEOUT = 10000;
-  var pictureTemplate = document.querySelector('.picture-template');
+  var pictureTemplate = document.querySelector('#picture-template');
 
   var PhotoView = Backbone.View.extend({
     initialize: function() {
@@ -20,7 +20,7 @@
      * @type {Object.<string, string>}
      */
     events: {
-      'click .picture img': '_onClick'
+      'click .picture': '_onClick'
     },
 
     /**
