@@ -71,14 +71,15 @@
    */
   Gallery.prototype._showCurrentPhoto = function() {
     this._destroyCurrentPhoto();
-    if (this.collection.at(this._currentIndexPhoto).get('preview')) {
+    var collectionModel = this.collection.at(this._currentIndexPhoto);
+    if (collectionModel.get('preview')) {
       this._photoPreviewView = new VideoPreviewView({
-        model: this.collection.at(this._currentIndexPhoto),
+        model: collectionModel,
         el: document.querySelector('.gallery-overlay-preview')
       });
     } else {
       this._photoPreviewView = new PhotoPreviewView({
-        model: this.collection.at(this._currentIndexPhoto),
+        model: collectionModel,
         el: document.querySelector('.gallery-overlay-preview')
       });
     }
