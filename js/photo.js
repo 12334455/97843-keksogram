@@ -14,9 +14,10 @@
     newPictureElement.querySelector('.picture-comments').textContent = this._data['comments'];
     newPictureElement.querySelector('.picture-likes').textContent = this._data['likes'];
 
-    if (this._data['url']) {
+    if (this._data['url'] || this._data['preview']) {
       var imageElement = new Image();
-      imageElement.src = this._data['url'];
+      //imageElement.src = this._data['url'];
+      imageElement.src = this._data['preview'] ? this._data['preview'] : this._data['url'];
     }
 
     var imageLoadTimeout = setTimeout(function() {

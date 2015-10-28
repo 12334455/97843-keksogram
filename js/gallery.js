@@ -1,4 +1,4 @@
-/* global PhotoPreviewView: true Backbone: true*/
+/* global PhotoPreviewView: true Backbone: true VideoPreviewView: true */
 'use strict';
 
 (function() {
@@ -43,6 +43,7 @@
     this._element.classList.remove('invisible');
     document.querySelector('.gallery-overlay-close').addEventListener('click', this._onCloseClick);
     document.addEventListener('keydown', this._onDocumentKeyDown);
+
     this._showCurrentPhoto();
   };
 
@@ -70,10 +71,17 @@
    */
   Gallery.prototype._showCurrentPhoto = function() {
     this._destroyCurrentPhoto();
-    this._photoPreviewView = new PhotoPreviewView({
-      model: this.collection.at(this._currentIndexPhoto),
-      el: document.querySelector('.gallery-overlay-preview')
-    });
+    if (this.collection.at(this._currentIndexPhoto).get('preview')) {
+      this._photoPreviewView = new VideoPreviewView({
+        model: this.collection.at(this._currentIndexPhoto),
+        el: document.querySelector('.gallery-overlay-preview')
+      });
+    } else {
+      this._photoPreviewView = new PhotoPreviewView({
+        model: this.collection.at(this._currentIndexPhoto),
+        el: document.querySelector('.gallery-overlay-preview')
+      });
+    }
     this._photoPreviewView.render();
   };
 

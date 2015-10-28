@@ -52,10 +52,13 @@
       this.el.querySelector('.picture-likes').textContent = this.model.get('likes');
 
       // Добавление фонового изображения.
-      if (this.model.get('url')) {
+      if (this.model.get('url') || this.model.get('preview')) {
         var imageElement = new Image();
-        imageElement.src = this.model.get('url');
-
+        if (this.model.get('preview')) {
+          imageElement.src = this.model.get('preview');
+        } else {
+          imageElement.src = this.model.get('url');
+        }
         this._imageLoadTimeout = setTimeout(function() {
           this.el.classList.add('picture-load-failure');
         }.bind(this), REQUEST_FAILURE_TIMEOUT);
