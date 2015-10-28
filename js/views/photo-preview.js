@@ -19,7 +19,7 @@
      * @type {Object.<string, string>}
      */
     events: {
-      'click .gallery-overlay-controls-like': '_onClick'
+      'click .gallery-overlay-controls-like': '_onClickLike'
     },
 
     /**
@@ -27,7 +27,7 @@
      * @param {Event} evt
      * @private
      */
-    _onClick: function(evt) {
+    _onClickLike: function(evt) {
       evt.stopPropagation();
       this.model.likeToggle();
     },

@@ -12,7 +12,7 @@
       this._onImageLoad = this._onImageLoad.bind(this);
       this._onImageFail = this._onImageFail.bind(this);
       this._onClick = this._onClick.bind(this);
-
+      this._onClickLike = this._onClickLike.bind(this);
       this.listenTo(this.model, 'change', this.render);
     },
 
@@ -22,7 +22,18 @@
      * @type {Object.<string, string>}
      */
     events: {
-      'click .picture': '_onClick'
+      'click .picture img': '_onClick',
+      'click .picture-likes': '_onClickLike'
+    },
+
+    /**
+     * При нажатие на клик вызывается обработка количетва "лайков"
+     * @param {Event} evt
+     * @private
+     */
+    _onClickLike: function(evt) {
+      evt.preventDefault();
+      this.model.likeToggle();
     },
 
     /**
