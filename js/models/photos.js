@@ -50,11 +50,14 @@
     },
     /**
      * Устанавливает способ фильтрации, нужный для сортировки
-     * @param filterID
+     * @param {string} filterID
      */
     setFilter: function(filterID) {
       this.filterBy = FilterToField[filterID] || 'likes';
     },
+    /**
+     * @type {FilterToField}
+     */
     filterBy: 'likes'
   });
 

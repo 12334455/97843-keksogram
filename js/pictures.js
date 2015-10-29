@@ -178,7 +178,7 @@
 
   /**
    * Парсит хэш нашего адреса для фильтра
-   * @returns {Array.<string>|string}
+   * @returns {string}
    */
   function parseURL() {
     var filterHash = location.hash.match(/^#filters\/(\S+)$/);
