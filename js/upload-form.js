@@ -1,6 +1,9 @@
-/* global Resizer: true resizer: true*/
+/* global resizer: true*/
 'use strict';
-define(function() {
+define([
+  'resize-picture',
+  'resize-form'
+], function(Resizer) {
   var uploadForm = document.forms['upload-select-image'];
   var resizeForm = document.forms['upload-resize'];
   var filterForm = document.forms['upload-filter'];
