@@ -10,9 +10,9 @@
 (function() {
   /**
    * Список названий для каждого фильтра
-   * @enum {number}
+   * @type {{new: string, discussed: string, popular: string}}
    */
-  var filterToField = {
+  var FilterToField = {
     'new': 'date',
     'discussed': 'comments',
     'popular': 'likes'
@@ -49,7 +49,7 @@
       return result;
     },
     setFilter: function(filterID) {
-      this.filterBy = filterToField[filterID] || 'likes';
+      this.filterBy = FilterToField[filterID] || 'likes';
     },
     filterBy: 'likes'
   });

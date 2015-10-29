@@ -1,10 +1,10 @@
 /* global PhotoView: true Gallery: true PhotosCollection: true*/
 'use strict';
 
-  /*
-   Загрузка и фильтрация фотографий производится через коллекцию, описанную в модуле js/models/photos.js,
-   а отрисовка — через представление js/views/photo.js.
-   */
+/*
+ Загрузка и фильтрация фотографий производится через коллекцию, описанную в модуле js/models/photos.js,
+ а отрисовка — через представление js/views/photo.js.
+ */
 (function() {
   /**
    * @const
@@ -120,7 +120,6 @@
       var element = evt.target;
       if (element.tagName === 'INPUT') {
         location.hash = 'filters/' + evt.target.value;
-        setActiveFilter(parseURL()); // При нажатии передаем  filter-new, filter-discussed, filter-popular
       }
     });
   }
@@ -177,11 +176,14 @@
     pictureContainer.classList.add('picture-load-failure');
   }
 
+  /**
+   * Парсит хэш нашего адреса для фильтра
+   * @returns {Array.<string>|string}
+   */
   function parseURL() {
     var filterHash = location.hash.match(/^#filters\/(\S+)$/);
     if (!filterHash) {
-      filterHash[0] = '#filters/popular';
-      filterHash[1] = 'popular';
+      return 'popular';
     }
     return filterHash[1];
   }
@@ -190,7 +192,7 @@
    * Слушаем изменение события hashchange
    */
   window.addEventListener('hashchange', function() {
-    parseURL();
+    setActiveFilter(parseURL());
   });
 
   /**
