@@ -15,6 +15,10 @@ define(function() {
   var imageWidth;
   var imageConstraint;
 
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
   window.addEventListener('imagecreated', function() {
     imageConstraint = resizer.getConstraint();
     imageHeight = resizer.getImageSizeHeight();
@@ -27,41 +31,28 @@ define(function() {
     picY.max = Math.max(imageHeight - picSide.value, 0);
     picSide.max = Math.min(imageWidth, imageHeight);
 
-    picX.min = picX.value = 0;
-    picY.min = picY.value = 0;
+    picX.min = 0;
+    picY.min = 0;
+    picX.value = Math.floor(imageConstraint.x);
+    picY.value = Math.floor(imageConstraint.y);
     picSide.min = 50;
   });
 
   window.addEventListener('resizerchange', function() {
     imageConstraint = resizer.getConstraint();
-
-    picX.value = Math.floor(imageConstraint.x);
-    picY.value = Math.floor(imageConstraint.y);
-
-    if (imageConstraint.x > picX.max) {
-      resizer.setConstraint(Number(picX.max), Number(picY.value), Number(picSide.value));
-    }
-    if (imageConstraint.x < picX.min) {
-      resizer.setConstraint(Number(picX.min), Number(picY.value), Number(picSide.value));
-    }
-    if (imageConstraint.y > picY.max) {
-      resizer.setConstraint(Number(picX.value), Number(picY.max), Number(picSide.value));
-    }
-    if (imageConstraint.y < picY.min) {
-      resizer.setConstraint(Number(picX.value), Number(picY.min), Number(picSide.value));
+    var x = clamp(Math.floor(imageConstraint.x), parseFloat(picX.min), parseFloat(picX.max));
+    var y = clamp(Math.floor(imageConstraint.y), parseFloat(picY.min), parseFloat(picY.max));
+    picX.value = x;
+    picY.value = y;
+    if (imageConstraint.x !== x || imageConstraint.y !== y) {
+      resizer.setConstraint(x, y, Number(picSide.value));
     }
   });
 
   picSide.onchange = function() {
-    if (Number(picSide.value) > Number(picSide.max)) {
-      picSide.value = picSide.max;
-    }
-    if (Number(picSide.value) < Number(picSide.min)) {
-      picSide.value = picSide.min;
-    }
+    picSide.value = clamp(Number(picSide.value), Number(picSide.min), Number(picSide.max));
     imageConstraint = resizer.getConstraint();
-
-    var sideDiff = (imageConstraint.side - Number(picSide.value)) / 2;
+    var sideDiff = Math.floor((imageConstraint.side - Number(picSide.value)) / 2);
     resizer.setConstraint(imageConstraint.x + sideDiff, imageConstraint.y + sideDiff, Number(picSide.value));
 
     var picCanvas = document.querySelector('canvas');
@@ -76,22 +67,12 @@ define(function() {
   };
 
   picX.onchange = function() {
-    if (Number(picX.value) > Number(picX.max)) {
-      picX.value = picX.max;
-    }
-    if (Number(picX.value) < Number(picX.min)) {
-      picX.value = picX.min;
-    }
+    picX.value = clamp(Number(picX.value), Number(picX.min), Number(picX.max));
     resizer.setConstraint(Number(picX.value), Number(picY.value), Number(picSide.value));
   };
 
   picY.onchange = function() {
-    if (Number(picY.value) > Number(picY.max)) {
-      picY.value = picY.max;
-    }
-    if (Number(picY.value) < Number(picY.min)) {
-      picY.value = picY.min;
-    }
+    picY.value = clamp(Number(picY.value), Number(picY.min), Number(picY.max));
     resizer.setConstraint(Number(picX.value), Number(picY.value), Number(picSide.value));
   };
 

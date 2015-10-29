@@ -75,17 +75,17 @@ define([
     this._destroyCurrentPhoto();
     var collectionModel = this.collection.at(this._currentIndexPhoto);
     if (collectionModel.get('preview')) {
-      this._photoPreviewView = new VideoPreviewView({
+      this._previewView = new VideoPreviewView({
         model: collectionModel,
         el: document.querySelector('.gallery-overlay-preview')
       });
     } else {
-      this._photoPreviewView = new PhotoPreviewView({
+      this._previewView = new PhotoPreviewView({
         model: collectionModel,
         el: document.querySelector('.gallery-overlay-preview')
       });
     }
-    this._photoPreviewView.render();
+    this._previewView.render();
   };
 
   /**
@@ -93,9 +93,9 @@ define([
    * @private
    */
   Gallery.prototype._destroyCurrentPhoto = function() {
-    if (this._photoPreviewView) {
-      this._photoPreviewView.destroy();
-      this._photoPreviewView = null;
+    if (this._previewView) {
+      this._previewView.destroy();
+      this._previewView = null;
     }
   };
 
