@@ -1,4 +1,5 @@
 'use strict';
+
 define(function() {
   var images = [
     'img/logo-background-1.jpg',

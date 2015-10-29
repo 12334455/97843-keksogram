@@ -1,5 +1,6 @@
 /* global resizer: true*/
 'use strict';
+
 define([
   'resize-picture',
   'resize-form'
