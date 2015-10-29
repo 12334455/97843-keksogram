@@ -10,7 +10,7 @@
 (function() {
   /**
    * Список названий для каждого фильтра
-   * @type {{new: string, discussed: string, popular: string}}
+   * @enum {number}
    */
   var FilterToField = {
     'new': 'date',
@@ -48,6 +48,10 @@
       }
       return result;
     },
+    /**
+     * Устанавливает способ фильтрации, нужный для сортировки
+     * @param filterID
+     */
     setFilter: function(filterID) {
       this.filterBy = FilterToField[filterID] || 'likes';
     },
