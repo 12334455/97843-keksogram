@@ -1,7 +1,6 @@
-/* global Backbone: true*/
 'use strict';
 
-(function() {
+define(function() {
   var VideoPreviewView = Backbone.View.extend({
     initialize: function() {
       this._onClickVideo = this._onClickVideo.bind(this);
@@ -72,6 +71,5 @@
     }
   });
 
-
-  window.VideoPreviewView = VideoPreviewView;
-})();
+  return VideoPreviewView;
+});

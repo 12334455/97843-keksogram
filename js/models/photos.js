@@ -1,5 +1,3 @@
-/* global Backbone: true PhotoModel: true*/
-
 'use strict';
 
   /* Коллекция для работы с фотографиями, которая является наследником Backbone.Collection.
@@ -7,7 +5,9 @@
    Переопределен параметр model - он ссылкой на модель фотографии.
    */
 
-(function() {
+define([
+  'models/photo'
+], function(PhotoModel) {
   /**
    * Список названий для каждого фильтра
    * @enum {number}
@@ -61,5 +61,5 @@
     filterBy: 'likes'
   });
 
-  window.PhotosCollection = PhotosCollection;
-})();
+  return PhotosCollection;
+});

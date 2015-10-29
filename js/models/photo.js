@@ -1,7 +1,6 @@
 'use strict';
 
-// Модель фотографии, которая является наследником Backbone.Model
-(function() {
+define(function() {
   /**
    * @constructor
    * @extends {Backbone.Model}
@@ -30,5 +29,5 @@
     }
 
   });
-  window.PhotoModel = PhotoModel;
-})();
+  return PhotoModel;
+});

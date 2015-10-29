@@ -1,9 +1,6 @@
-/* global Backbone: true */
 'use strict';
 
-/*ПРЕДСТАВЛЕНИЕ ФОТОГРАФИИ В СПИСКЕ. ЕСТЬ ОБРАБОТЧИК ONCLICK*/
-
-(function() {
+define(function() {
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var pictureTemplate = document.querySelector('#picture-template');
 
@@ -111,5 +108,5 @@
     }
   });
 
-  window.PhotoView = PhotoView;
-})();
+  return PhotoView;
+});

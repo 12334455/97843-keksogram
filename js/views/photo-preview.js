@@ -1,7 +1,6 @@
-/* global Backbone: true*/
 'use strict';
 
-(function() {
+define(function() {
   var REQUEST_FAILURE_TIMEOUT = 10000;
 
   var PhotoPreviewView = Backbone.View.extend({
@@ -84,6 +83,5 @@
     }
   });
 
-
-  window.PhotoPreviewView = PhotoPreviewView;
-})();
+  return PhotoPreviewView;
+});

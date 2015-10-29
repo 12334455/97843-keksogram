@@ -1,11 +1,17 @@
-/* global PhotoView: true Gallery: true PhotosCollection: true*/
 'use strict';
 
-/*
- Загрузка и фильтрация фотографий производится через коллекцию, описанную в модуле js/models/photos.js,
- а отрисовка — через представление js/views/photo.js.
- */
-(function() {
+requirejs.config({
+  baseUrl: 'js'
+});
+
+define([
+  'views/photo',
+  'models/photos',
+  'gallery',
+  'logo-background',
+  'upload-form',
+  'filter-form'
+], function(PhotoView, PhotosCollection, Gallery) {
   /**
    * @const
    * @type {number}
@@ -207,4 +213,4 @@
   }).fail(function() {
     showLoadFailure();
   });
-})();
+});
