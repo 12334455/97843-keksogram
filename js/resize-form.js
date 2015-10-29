@@ -33,9 +33,11 @@ define(function() {
 
     picX.min = 0;
     picY.min = 0;
+    picSide.min = 50;
+
     picX.value = Math.floor(imageConstraint.x);
     picY.value = Math.floor(imageConstraint.y);
-    picSide.min = 50;
+    picSide.value = Math.floor(imageConstraint.side);
   });
 
   window.addEventListener('resizerchange', function() {
