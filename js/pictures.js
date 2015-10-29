@@ -91,13 +91,11 @@
   /**
    * Фильтрация списка фотографий
    * в соответствии с установленным фильтром
-   * Плюс запись установленного фильтра в localStorage
    * @param {string} filterID
    */
   function filterPictures(filterID) {
     photosCollection.setFilter(filterID);
     photosCollection.sort();
-    localStorage.setItem('filterID', filterID);
   }
 
   /**
@@ -106,7 +104,7 @@
    * @param {string} filterID
    */
   function setActiveFilter(filterID) {
-    document.getElementById(filterID).checked = true;
+    document.getElementById('filter-' + filterID).checked = true;
     filterPictures(filterID);
     currentPage = 0;
     renderPictures(currentPage);
@@ -120,8 +118,9 @@
 
     filtersContainer.addEventListener('click', function(evt) {
       var element = evt.target;
-      if (element.tagName === 'INPUT' && localStorage.getItem('filterID') !== element.id) {
-        setActiveFilter(element.id); // При нажатии передаем  filter-new, filter-discussed, filter-popular
+      if (element.tagName === 'INPUT') {
+        location.hash = 'filters/' + evt.target.value;
+        setActiveFilter(parseURL()); // При нажатии передаем  filter-new, filter-discussed, filter-popular
       }
     });
   }
@@ -178,6 +177,22 @@
     pictureContainer.classList.add('picture-load-failure');
   }
 
+  function parseURL() {
+    var filterHash = location.hash.match(/^#filters\/(\S+)$/);
+    if (!filterHash) {
+      filterHash[0] = '#filters/popular';
+      filterHash[1] = 'popular';
+    }
+    return filterHash[1];
+  }
+
+  /**
+   * Слушаем изменение события hashchange
+   */
+  window.addEventListener('hashchange', function() {
+    parseURL();
+  });
+
   /**
    * Загрузка коллекции Backbone и инициализация фильтров и scroll.
    */
@@ -186,7 +201,7 @@
     filters.classList.remove('hidden');
     initScroll();
 
-    setActiveFilter(localStorage.getItem('filterID') || 'filter-popular');
+    setActiveFilter(parseURL());
   }).fail(function() {
     showLoadFailure();
   });

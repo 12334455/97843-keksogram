@@ -13,9 +13,9 @@
    * @enum {number}
    */
   var filterToField = {
-    'filter-new': 'date',
-    'filter-discussed': 'comments',
-    'filter-popular': 'likes'
+    'new': 'date',
+    'discussed': 'comments',
+    'popular': 'likes'
   };
 
   /**
