@@ -41,12 +41,31 @@ define(function() {
     className: 'picture',
 
     /**
+     * Достает и ставит комменты и лайки
+     * @param {String} classC
+     * @param {String} classL
+     */
+    setCommentsAndLikes: function(classC, classL) {
+      this.el.querySelector(classC).textContent = this.model.get('comments');
+      this.el.querySelector(classL).textContent = this.model.get('likes');
+    },
+
+    /**
+     * Добавляет лисененги
+     * @param imgEl
+     */
+    setListeners: function(imgEl) {
+      imgEl.addEventListener('load', this._onImageLoad);
+      imgEl.addEventListener('error', this._onImageFail);
+      imgEl.addEventListener('abort', this._onImageFail);
+    },
+
+    /**
      * Отрисовка "карточки" фотографии
      */
     render: function() {
-      this.el.appendChild(pictureTemplate.content.children[0].cloneNode(true)); //this.el ссылка на el который создает bb при вызове конструктора
-      this.el.querySelector('.picture-comments').textContent = this.model.get('comments');
-      this.el.querySelector('.picture-likes').textContent = this.model.get('likes');
+      this.el.appendChild(pictureTemplate.content.children[0].cloneNode(true));
+      this.setCommentsAndLikes('.picture-comments', '.picture-likes');
 
       // Добавление фонового изображения.
       var src = this.model.get('preview') || this.model.get('url');
@@ -56,10 +75,7 @@ define(function() {
         this._imageLoadTimeout = setTimeout(function() {
           this.el.classList.add('picture-load-failure');
         }.bind(this), REQUEST_FAILURE_TIMEOUT);
-
-        imageElement.addEventListener('load', this._onImageLoad);
-        imageElement.addEventListener('error', this._onImageFail);
-        imageElement.addEventListener('abort', this._onImageFail);
+        this.setListeners(imageElement);
       }
     },
 
@@ -75,24 +91,30 @@ define(function() {
     },
 
     /**
+     * Очищает лисененги
+     * @param {Event} evt
+     */
+    clearTimeAndListeners: function(evt) {
+      clearTimeout(this._imageLoadTimeout);
+      this.cleanupImageListeners(evt.target);
+    },
+
+    /**
      * @param {Event} evt
      * @private
      */
     _onImageLoad: function(evt) {
-      clearTimeout(this._imageLoadTimeout);
+      this.clearTimeAndListeners(evt);
       var oldElement = this.el.querySelector('.picture');
       var oldImageElement = this.el.querySelector('.picture img');
-
-      this.el.style.width = '182px';
-      this.el.style.height = '182px';
       oldElement.replaceChild(evt.target, oldImageElement);
-      this._cleanupImageListeners(evt.target);
     },
 
     /**
      * @private
      */
-    _onImageFail: function() {
+    _onImageFail: function(evt) {
+      this.cleanupImageListeners(evt.target);
       this.el.classList.add('picture-load-failure');
     },
 
@@ -101,7 +123,7 @@ define(function() {
      * @param {Image} image
      * @private
      */
-    _cleanupImageListeners: function(image) {
+    cleanupImageListeners: function(image) {
       image.removeEventListener('load', this._onImageLoad);
       image.removeEventListener('error', this._onImageError);
       image.removeEventListener('abort', this._onImageError);

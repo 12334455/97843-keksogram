@@ -1,10 +1,13 @@
 'use strict';
 
-define(function() {
-  var VideoPreviewView = Backbone.View.extend({
+define([
+  'views/photo'
+], function(PhotoView) {
+  var VideoPreviewView = PhotoView.extend({
     initialize: function() {
       this._onClickVideo = this._onClickVideo.bind(this);
       this._onClickLike = this._onClickVideo.bind(this);
+      this.listenTo(this.model, 'change:likes', this._renderLikes);
     },
 
     /**
@@ -18,13 +21,10 @@ define(function() {
     },
 
     /**
-     * При нажатие на клик вызывается обработка количетва "лайков"
-     * @param {Event} evt
+     * Отрисовывает лайки после лайка
      * @private
      */
-    _onClickLike: function(evt) {
-      evt.stopPropagation();
-      this.model.likeToggle();
+    _renderLikes: function() {
       this.el.querySelector('.likes-count').innerHTML = this.model.get('likes');
     },
 
@@ -42,9 +42,7 @@ define(function() {
      * @returns {PhotoPreviewView}
      */
     render: function() {
-      this.el.querySelector('.likes-count').innerHTML = this.model.get('likes');
-      this.el.querySelector('.comments-count').innerHTML = this.model.get('comments');
-
+      this.setCommentsAndLikes('.comments-count', '.likes-count');
       this.img = this.el.querySelector('.gallery-overlay-image');
 
       this.video = document.createElement('video');
